@@ -1,12 +1,17 @@
-import './assets/App.css'
+import './assets/App.css';
+import Navbar from './components/navbar';
+import Footer from './components/footer';
+import React from 'react';
 
-function App() {
-
+const App: React.FC =()=>{
   return (
-    <div className='text-3xl font-bold underline'>
-     hello
-    </div>
-  )
+    <>
+      <Navbar />
+      <main className="min-h-screen max-w-screen-2xl mx-auto px-4 py-6 font-primary">
+      </main>
+      <Footer />
+    </>
+  );
 }
 
-export default App
+export default App;
