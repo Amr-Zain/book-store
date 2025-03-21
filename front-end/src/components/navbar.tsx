@@ -6,7 +6,7 @@ import avatarImg from "../assets/avatar.png"
 
 const currentUser = true;
 const token = true;
-const cartItems =true
+const cartItems =false;
 const navigation = [
     {name: "Dashboard", href:"/user-dashboard"},
     {name: "Orders", href:"/orders"},
@@ -25,10 +25,10 @@ const Navbar = () => {
                     </Link>
                     <div className="relative sm:w-72 w-40 space-x-2">
 
-                        <IoSearchOutline className="absolute inline-block left-3 inset-y-2" />
+                        <IoSearchOutline className="absolute inline-block left-3 inset-y-2 sm:left-2" />
 
                         <input type="text" placeholder="Search here"
-                            className="bg-[#EAEAEA] w-full py-1 md:px-8 px-6 rounded-md focus:outline-none"
+                            className="bg-blackBG w-full py-1 md:px-8 px-7 rounded-md focus:outline-none"
                         />
                     </div>
                 </div>
