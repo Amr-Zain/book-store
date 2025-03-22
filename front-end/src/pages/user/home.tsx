@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import Banner from "../components/home/banner";
-import Slider from "../components/home/topSales";
-import Recommeneded from "../components/home/recommended";
+import Banner from "../../components/home/banner";
+import Slider from "../../components/home/topSales";
+import Recommeneded from "../../components/home/recommended";
 
 function Home() {
     useEffect(()=>{

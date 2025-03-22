@@ -3,10 +3,10 @@ import { HiMiniBars3CenterLeft, HiOutlineHeart, HiOutlineShoppingCart, HiOutline
 import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 import avatarImg from "../assets/avatar.png"
+import { useCart } from "../context/cartContext";
 
 const currentUser = true;
 const token = true;
-const cartItems =false;
 const navigation = [
     {name: "Dashboard", href:"/user-dashboard"},
     {name: "Orders", href:"/orders"},
@@ -14,7 +14,8 @@ const navigation = [
     {name: "Check Out", href:"/checkout"},
 ]
 const Navbar = () => {
-    const  [isDropdownOpen, setIsDropdownOpen] = useState(true)
+    const { state:{cartItems }} = useCart();
+    const  [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     return (
         <header className="max-w-screen-2xl mx-auto px-4 py-6">
@@ -75,7 +76,7 @@ const Navbar = () => {
                     <Link to="/cart" className="bg-primary p-1 sm:px-6 px-2 flex items-center rounded-sm">
                         <HiOutlineShoppingCart className='' />
                         {
-                            cartItems ?  <span className="text-sm font-semibold sm:ml-1">{5}</span> :  <span className="text-sm font-semibold sm:ml-1">0</span>
+                            <span className="text-sm font-semibold sm:ml-1">{cartItems.length}</span> 
                         }
                         
                        

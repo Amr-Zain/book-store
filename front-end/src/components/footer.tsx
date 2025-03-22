@@ -1,13 +1,14 @@
 
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"
 import logo from '../assets/footer-logo.png';
+import Button from "./utils/button";
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-10 px-4">
+    <footer className="bg-secondary text-white py-10 px-4">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="md:w-1/2 w-full">
-          <img src={logo} alt="Logo" className="mb-5 w-36" />
-          <ul className="flex flex-col md:flex-row gap-4">
+        <div className="md:w-1/2 w-full ">
+          <img src={logo} alt="Logo" className="mb-5 w-36 mx-auto" />
+          <ul className="flex flex-row gap-4 justify-center">
             <li><a href="#home" className="hover:text-primary">Home</a></li>
             <li><a href="#services" className="hover:text-primary">Services</a></li>
             <li><a href="#about" className="hover:text-primary">About Us</a></li>
@@ -25,9 +26,9 @@ const Footer = () => {
               placeholder="Enter your email"
               className="w-full px-4 py-2 bg-blackBG rounded-l-md text-black focus:outline-none"
             />
-            <button className="bg-primary px-6 py-2 rounded-r-md hover:bg-primary-dark">
+            <Button className="px-6 rounded-none rounded-r-lg">
               Subscribe
-            </button>
+            </Button>
           </div>
         </div>
       </div>

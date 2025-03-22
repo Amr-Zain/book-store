@@ -28,7 +28,7 @@ function BooksSlider({ books }: BooksProps ) {
                     slidesPerView: 2,
                     spaceBetween: 40,
                 },
-                1024: {
+                1070: {
                     slidesPerView: 2,
                     spaceBetween: 50,
                 },

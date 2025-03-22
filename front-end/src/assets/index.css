@@ -4,7 +4,7 @@
     --font-display: "Montserrat", "sans-serif";
     --breakpoint-3xl: 1920px;
     --color-primary: oklch(86.95% 0.1738 90.82);
-    --color-secondary: oklch(19.74% 0.1024 275.45);
+    --color-secondary: oklch(0.21 0.034 264.665);
     --color-blackBG: oklch(96.42% 0 0);
     --color-Favorite: oklch(68.28% 0.2066 30.81);
   }
