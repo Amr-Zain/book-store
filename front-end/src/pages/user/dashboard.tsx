@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import UserDashboard from '../../components/user-dashboard';
+import UserDashboard from '../../components/dashboardComponents';
 
 const Dashboard = () => {
 

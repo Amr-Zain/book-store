@@ -1,23 +1,10 @@
 import { Link } from 'react-router';
+import { Order as OrderType } from '../../types/order';
+import Order from '../../components/orders/order';
+import OrderInfo from '../../components/orders/orderAddress';
 
-interface Address {
-  city: string;
-  state: string;
-  country: string;
-  zipcode: string;
-}
 
-interface Order {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  totalPrice: number;
-  address: Address;
-  productIds: string[];
-  createdAt: string;
-}
-const fakeOrders: Order[] = [
+const fakeOrders: OrderType[] = [
     {
       _id: 'ORD123456',
       name: 'John Doe',
@@ -68,15 +55,20 @@ const OrderPage = () => {
         <div className="container mx-auto p-6 text-center">
         <div className="bg-red-100 text-red-700 p-4 rounded-lg">
             Failed to load orders
-            <button
-                className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
+            <button className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
                 Retry
             </button>
         </div>
         </div>
     );
-
+    const ordersList = orders.map((order)=>
+        <Order _id={order._id} createdAt={order.createdAt} 
+          totalPrice={order.totalPrice} productIds={order.productIds}>
+            <OrderInfo name={order.name} 
+                    address={order.address} 
+                    email={order.email} 
+                    phone={order.phone} />
+          </Order>)
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-6">Your Orders</h2>
@@ -91,64 +83,10 @@ const OrderPage = () => {
             Browse Products
           </Link>
         </div>
-      ) : (
-        <div className="space-y-6">
-          {orders.map((order: Order, index: number) => (
-            <div 
-              key={order._id}
-              className="bg-white rounded-lg shadow-sm p-6 border border-gray-100"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                  Order #{index + 1}
-                </span>
-                <span className="text-sm text-gray-500">
-                  {new Date(order.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Contact Information</h3>
-                  <p className="text-gray-600">Name: {order.name}</p>
-                  <p className="text-gray-600">Email: {order.email}</p>
-                  <p className="text-gray-600">Phone: {order.phone}</p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Shipping Address</h3>
-                  <p className="text-gray-600">
-                    {order.address.city}, {order.address.state}<br/>
-                    {order.address.country}, {order.address.zipcode}
-                  </p>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-3">Products</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {order.productIds.map((productId: string) => (
-                    <Link
-                      key={productId}
-                      to={`/products/${productId}`}
-                      className="text-blue-600 hover:underline flex items-center"
-                    >
-                      <span className="mr-2">🛒</span>
-                      {productId}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div className="border-t pt-4 mt-4 text-right">
-                <p className="text-lg font-semibold">
-                  Total: ${order.totalPrice.toFixed(2)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      ) 
+      : 
+        ordersList
+      }
     </div>
   );
 };

@@ -20,11 +20,11 @@ function CartAddButton({ isAdded, add }: { isAdded: boolean; add: () => void }) 
             
         }
     };
-    const bothFase = !isAdded && !isClicked;
+
     return (
         <Button
             onClick={clickHandler}
-            className={`group flex justify-center h-8 relative transition-all duration-300 ease-in-out items-center gap-1 text-sm overflow-hidden ${
+            className={`group flex justify-center h-8 w-full max-w-[200px] relative transition-all duration-300 ease-in-out items-center gap-1 text-sm overflow-hidden ${
                 isClicked ? 'clicked' : ''
             }`}
         >
@@ -46,17 +46,9 @@ function CartAddButton({ isAdded, add }: { isAdded: boolean; add: () => void }) 
             } ${isAdded ? 'left-[110%]' : ''}`} />
 
             <FaBox className={`absolute z-30 text-sm transform -translate-x-1/2 -translate-y-1/2 
-            ${ bothFase ? 'animate-box' : 'top-[-30%] left-[52%]'}
-            ${isAdded ? 'top-[40%] left-[112%]' : 'top-[-30%] left-[52%]'}
-             `} 
-            />
+            ${ isClicked ? 'animate-box' : 'top-[-30%] left-[52%]'}`} />
         </Button>
     );
 }
 
 export default CartAddButton;
-
-/*
-<FiShoppingCart className='absolute z-20 top-1/2 left-[-10%] text-2xl transform -translate-x-1/2 -translate-y-1/2 group-[.clicked]:animate-cart' />
-                    <FaBox className='absolute z-30 top-[-30%] left-[52%] text-sm transform -translate-x-1/2 -translate-y-1/2 group-[.clicked]:animate-box'/> 
- */

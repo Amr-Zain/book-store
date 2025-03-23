@@ -1,4 +1,4 @@
-import BookCard from '../bookCart';
+import BookCard from '../bookCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 
@@ -24,7 +24,7 @@ function BooksSlider({ books }: BooksProps ) {
                     slidesPerView: 1,
                     spaceBetween: 20,
                 },
-                768: {
+                830: {
                     slidesPerView: 2,
                     spaceBetween: 40,
                 },

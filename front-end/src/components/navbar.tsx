@@ -49,7 +49,7 @@ const Navbar = () => {
                                             {
                                                 navigation.map((item) => (
                                                     <li key={item.name} onClick={() => setIsDropdownOpen(false)}>
-                                                        <Link to={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                                                        <Link to={item.href}  onClick={() => window.scrollTo(0, 0)} className="block px-4 py-2 text-sm hover:bg-gray-100">
                                                             {item.name}
                                                         </Link>
                                                     </li>
@@ -72,14 +72,11 @@ const Navbar = () => {
                     <button className="hidden sm:block">
                         <HiOutlineHeart className="size-6" />
                     </button>
-
-                    <Link to="/cart" className="bg-primary p-1 sm:px-6 px-2 flex items-center rounded-sm">
+                    <Link to="/cart" className="bg-primary hover:bg-secondary hover:text-white p-1 sm:px-6 px-2 flex items-center rounded-sm">
                         <HiOutlineShoppingCart className='' />
                         {
                             <span className="text-sm font-semibold sm:ml-1">{cartItems.length}</span> 
                         }
-                        
-                       
                     </Link>
                 </div>
             </nav>

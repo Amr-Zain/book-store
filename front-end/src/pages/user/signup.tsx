@@ -32,9 +32,9 @@ const Signup = () => {
   const [state, dispatch, isPending] = useActionState(handleRegister, { error: undefined });
 
   return (
-    <div className='h-[calc(100vh-120px)] flex justify-center items-center '>
+    <div className='h-[calc(100vh-120px)] flex justify-center items-center bg-gray-100 rounded shadow'>
       <div className='w-full max-w-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
-        <h2 className='text-xl text-center font-semibold mb-4'>Sign Up</h2>
+        <h2 className='text-xl text-gray-700 text-center font-semibold mb-4'>Sign Up</h2>
 
         <form action={dispatch}>
           <div className='mb-4'>
@@ -45,7 +45,7 @@ const Signup = () => {
               id="email" 
               placeholder='Email Address'
               required
-              className='shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
+              className='border border-gray-200 shadow-sm rounded bg-gray-50 appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
             />
           </div>
           <div className='mb-4'>
@@ -57,7 +57,7 @@ const Signup = () => {
               placeholder='Password'
               required
               minLength={6}
-              className='shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
+              className='border border-gray-200 shadow-sm rounded bg-gray-50 appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
             />
           </div>
 
@@ -75,7 +75,7 @@ const Signup = () => {
           </div>
         </form>
 
-        <p className='align-baseline font-medium mt-4 text-sm'>
+        <p className='align-baseline font-medium text-gray-700 mt-4 text-sm'>
           Have an account?{' '}
           <Link to="/login" className='text-secondary underline hover:text-blue-700'>Login</Link>
         </p>

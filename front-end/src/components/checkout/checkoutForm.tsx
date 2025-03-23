@@ -5,7 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/cartContext';
 import CheckoutInput from './input';
 import Button from '../utils/button';
-import { FormState, OrderData, OrderPayload } from '../../types/checkout';
+import { Order, OrderInfoForm } from '../../types/order';
+
+export interface FormState {
+    error?: string;
+    fieldErrors?: Partial<OrderInfoForm>;
+}
 
 const formInputs = [
     { id: 'name', label: 'Full Name', type: 'text' },
@@ -17,11 +22,11 @@ const formInputs = [
     { id: 'state', label: 'State', type: 'text' },
     { id: 'zipcode', label: 'Zipcode', type: 'text' },
 ]
-const validateForm = (formData:OrderData):[boolean,Partial<OrderData>]=>{
+const validateForm = (formData:OrderInfoForm):[boolean,Partial<OrderInfoForm>]=>{
         let hasError = false;
-        const fieldErrors: Partial<OrderData> = {};
+        const fieldErrors: Partial<OrderInfoForm> = {};
 
-        const requiredFields: (keyof OrderData)[] = [
+        const requiredFields: (keyof OrderInfoForm)[] = [
             'name', 'email', 'phone', 'address', 'city', 'country', 'state', 'zipcode'
         ];
         requiredFields.forEach(field => {
@@ -46,7 +51,7 @@ function CheckoutForm() {
     
     const onSubmit = async (state: FormState, data: FormData): Promise<FormState> => {
         // Form validation
-        const formData: OrderData = {
+        const formData: OrderInfoForm = {
             name: data.get('name') as string,
             email: data.get('email') as string,
             phone: data.get('phone') as string,
@@ -63,7 +68,7 @@ function CheckoutForm() {
             return { ...state, error: 'Please fix form errors', fieldErrors };
         }
         
-        const newOrder: OrderPayload = {
+        const newOrder: Omit<Order,'_id'|'createdAt'> = {
             ...formData,
             address: {
                 city: formData.city,
@@ -88,9 +93,9 @@ function CheckoutForm() {
     
     const [state, dispatch, isPending] = useActionState(onSubmit, { error: undefined });
     //const isDesabled = 
-    const Inputs =  formInputs.map((field) =>  <CheckoutInput key={field.id} {...field} error={state.fieldErrors?.[field.id as keyof OrderData]} />)
+    const Inputs =  formInputs.map((field) =>  <CheckoutInput key={field.id} {...field} error={state.fieldErrors?.[field.id as keyof OrderInfoForm]} />)
     
-    if(cartItems.length === 0) return <p className='py-4 bg-red-100 text-red-500 rounded text-center my-4'>Your Cart is Empty</p>
+    if(cartItems.length === 0) return <p className='py-4 bg-red-100 text-red-500 rounded text-center my-8'>Your Cart is Empty</p>
     return ( <form action={dispatch} className="space-y-6">
                 {state.error && (
                     <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">

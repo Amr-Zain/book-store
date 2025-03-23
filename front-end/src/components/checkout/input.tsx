@@ -2,7 +2,7 @@ type prps = {
     id:string;
     label: string;
     type: string;
-    error: string| undefined
+    error: string | undefined;
 }
 
 
@@ -16,7 +16,7 @@ function CheckoutInput({ id, label, type, error}:prps) {
             name={id}
             type={type}
             required
-            className={`w-full p-2 border rounded ${
+            className={`w-full p-2 border border-gray-200 shadow-sm rounded bg-gray-50 focus:outline-none ${
                 error ? 'border-red-500' : ''
             }`}
             aria-describedby={`${id}-error`}

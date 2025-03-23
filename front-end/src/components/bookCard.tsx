@@ -13,7 +13,7 @@ const BookCard = ({ book }: BookCardProps) => {
 
   return (
     <div className="rounded-lg transition-shadow duration-300 hover:shadow-lg">
-      <div className="flex flex-col sm:flex-row sm:h-72  sm:justify-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:h-72  sm:justify-center gap-2">
 
         <div className="sm:h-72 sm:flex-shrink-0 lg:w-52 mx-auto  overflow-hidden rounded-md border border-gray-200">
           <Link to={`/books/${book._id}`} className="block h-full">
@@ -25,7 +25,7 @@ const BookCard = ({ book }: BookCardProps) => {
           </Link>
         </div>
 
-        <div className="flex flex-col  justify-between flex-grow">
+        <div className="flex flex-col  justify-between flex-grow pr-2 py-3">
           <div>
             <Link to={`/books/${book._id}`}>
               <h3 className="text-lg font-semibold hover:text-secondary mb-1 line-clamp-2">
