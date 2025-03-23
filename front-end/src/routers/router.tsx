@@ -4,7 +4,7 @@ import Login from "../pages/user/login";
 import Signup from "../pages/user/signup";
 import Home from "../pages/user/home";
 import Book from "../pages/user/book";
-import UserDashboard from "../pages/user/userDashboard";
+import UserDashboard from "../pages/user/dashboard";
 import OrderPage from "../pages/user/orders";
 import Cart from "../pages/user/cart";
 import Checkout from "../pages/user/checkout";

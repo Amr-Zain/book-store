@@ -1,17 +1,16 @@
-import { FiShoppingCart } from "react-icons/fi"
 import { useParams } from "react-router-dom"
 
 import { getImgUrl } from '../../utils/url';
 import { useEffect, useState } from "react";
 import { FullBookInfo } from "../../types";
-import Button from "../../components/utils/button";
 import { useCart } from "../../context/cartContext";
+import CartAddButton from "../../components/cart/cartAddButton";
 import { cartAddItem } from "../../actions/cart";
 
 const Book = () => {
     const {id} = useParams();
     const [ book, setBook ] = useState<FullBookInfo |null>(null)
-    const { dispatch } = useCart();
+    const { dispatch, state:{cartItems} } = useCart();
     useEffect(()=>{
         //fetch the book
         const book:FullBookInfo = {_id:id ||'1',title: 'dskflj',
@@ -53,13 +52,7 @@ const Book = () => {
                     <p className="text-gray-700"><strong>Description:</strong> {book!.description}</p>
                 </div>
 
-               
-                <Button 
-                onClick={()=>dispatch(cartAddItem(book))}
-                className="flex justify-center items-center  gap-1">
-                    <FiShoppingCart className="" />
-                    <span>Add to Cart</span>
-                </Button>
+                <CartAddButton isAdded={cartItems.some(item=>item._id === book._id)}  add={()=>dispatch(cartAddItem(book))}/>
             </div>
         </div>
   )

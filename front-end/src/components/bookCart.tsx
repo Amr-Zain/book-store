@@ -1,16 +1,16 @@
-import { FiShoppingCart } from 'react-icons/fi'
 import { getImgUrl } from '../utils/url'
 import { Link } from 'react-router-dom'
 import { Book } from '../types'
-import Button from './utils/button'
 import { cartAddItem } from '../actions/cart'
 import { useCart } from '../context/cartContext'
+import CartAddButton from './cart/cartAddButton'
 
 interface BookCardProps {
   book: Book
 }
 const BookCard = ({ book }: BookCardProps) => {
-  const { dispatch } = useCart();
+  const { dispatch, state:{cartItems} } = useCart();
+
   return (
     <div className="rounded-lg transition-shadow duration-300 hover:shadow-lg">
       <div className="flex flex-col sm:flex-row sm:h-72  sm:justify-center gap-3">
@@ -43,12 +43,7 @@ const BookCard = ({ book }: BookCardProps) => {
             </p>
           </div>
 
-          <Button
-            onClick={()=>dispatch(cartAddItem(book))}
-            className="flex justify-center items-center gap-1 text-sm">
-              <FiShoppingCart className="" />
-              <span>Add to Cart</span>
-          </Button>
+          <CartAddButton isAdded={cartItems.some(item=>item._id === book._id)} add={()=>dispatch(cartAddItem(book))}/>
         </div>
       </div>
     </div>

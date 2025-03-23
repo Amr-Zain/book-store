@@ -1,7 +1,7 @@
 // context/CartContext.tsx
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useEffect } from 'react';
 import { cartReducer } from '../reducers/cart';
-import { CartAction, CartState } from '../types';
+import { CartAction, CartState } from '../types/cartReducer';
 
 type CartContextType = {
     state: CartState;
@@ -10,17 +10,32 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-
-export const CartProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, { 
+const loadInitialState = (): CartState => {
+  const storedCart = localStorage.getItem('cart');
+  if (storedCart) {
+    try {
+      return JSON.parse(storedCart);
+    } catch (error) {
+      console.error('Error parsing cart from localStorage:', error);
+    }
+  }
+  return { 
     cartItems: [], 
     totalPrice: 0
-  });
+  };
+};
+
+export const CartProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+  const [state, dispatch] = useReducer(cartReducer, loadInitialState());
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(state));
+  }, [state]);
 
   return (
-    <CartContext value={{ state, dispatch }}>
+    <CartContext.Provider value={{ state, dispatch }}>
       {children}
-    </CartContext>
+    </CartContext.Provider>
   );
 };
 

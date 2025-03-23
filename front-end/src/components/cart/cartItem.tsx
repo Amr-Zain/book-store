@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { getImgUrl } from '../../utils/url';
-import { CartItemType } from '../../types';
+import { CartItemType } from '../../types/cartReducer';
 import { GoPlus } from 'react-icons/go';
 import { LuMinus } from 'react-icons/lu';
 import { useCart } from '../../context/cartContext';
@@ -32,7 +32,7 @@ const CartItem = ({ item }: CartItemProps) => {
           <h3>
             <Link to="/">{item.title}</Link>
           </h3>
-          <p className="sm:ml-4">${item.newPrice}</p>
+          <p className="sm:ml-4">${Number(item.newPrice *item.quantity).toFixed(2)}</p>
         </div>
         <p className="mt-1 text-sm text-gray-500 capitalize">
           <strong>Category: </strong>{item.category}

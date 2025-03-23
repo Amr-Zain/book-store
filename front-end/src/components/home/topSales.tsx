@@ -1,17 +1,17 @@
 import {  useState } from 'react';
-import { Category } from '../../types';
+import { Book, Category } from '../../types';
 import BooksSlider from './booksSlider';
 
 
-const slides = [
-    {_id:'1',title: 'dskflj',coverImage:'book-1.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300, },
-    {_id:'2',title: 'dskflj',coverImage:'book-2.png',description:'dfskl fhseh eeop cmxlak', newPrice:250,oldPrice:300,},
-    {_id:'3',title: 'dskflj',coverImage:'book-3.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300 },
-    {_id:'4',title: 'dskflj',coverImage:'book-4.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300, },
-    {_id:'5',title: 'dskflj',coverImage:'book-1.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300, },
-    {_id:'6',title: 'dskflj',coverImage:'book-2.png',description:'dfskl fhseh eeop cmxlak', newPrice:250,oldPrice:300, },
-    {_id:'7',title: 'dskflj',coverImage:'book-3.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300, },
-    {_id:'8',title: 'dskflj',coverImage:'book-4.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300, },
+const slides: Book[] = [
+    {_id:'1',title: 'dskflj',coverImage:'book-1.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
+    {_id:'2',title: 'dskflj',coverImage:'book-2.png',description:'dfskl fhseh eeop cmxlak', newPrice:250,oldPrice:300,category:'Business'},
+    {_id:'3',title: 'dskflj',coverImage:'book-3.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300 ,category:'Business'},
+    {_id:'4',title: 'dskflj',coverImage:'book-4.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
+    {_id:'5',title: 'dskflj',coverImage:'book-1.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
+    {_id:'6',title: 'dskflj',coverImage:'book-2.png',description:'dfskl fhseh eeop cmxlak', newPrice:250,oldPrice:300,category:'Business' },
+    {_id:'7',title: 'dskflj',coverImage:'book-3.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
+    {_id:'8',title: 'dskflj',coverImage:'book-4.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
 ];
 
 type CategoriesList = Category | "Choose a categ";
@@ -41,7 +41,7 @@ const TopSellers = () => {
                     }
                 </select>
             </div>
-                <BooksSlider books={filteredBooks}/>
+            <BooksSlider books={filteredBooks}/>
         </div>
     )
 }

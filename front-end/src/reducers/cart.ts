@@ -1,8 +1,8 @@
 import { ADD_TO_CART, DELETE_FROM_CART, RESET_CART, UPDATE_QUANTITY } from "../actions/cart";
-import { CartAction, CartState } from "../types";
+import { CartAction, CartState } from "../types/cartReducer";
 
 
-  
+
 export const cartReducer = (state: CartState, action: CartAction): CartState => {
     switch (action.type) {
         case RESET_CART:
@@ -22,16 +22,16 @@ export const cartReducer = (state: CartState, action: CartAction): CartState => 
         case UPDATE_QUANTITY:{
             let price =0;
             const updatedItems = state.cartItems.map(item => {
-                if(item._id === action.payload?.id){
+                if(item._id === action.payload.id){
                     price = item.newPrice;
-                    return{ ...item, quantity:  item.quantity + action.payload?.value }
+                    return{ ...item, quantity:  item.quantity + action.payload.value }
                 }
                 else return item
             })
                     
             return {
                 cartItems: updatedItems,
-                totalPrice: state.totalPrice + (action.payload?.value* price) 
+                totalPrice: state.totalPrice + (action.payload.value* price) 
             };
     }
         case ADD_TO_CART:{
@@ -49,5 +49,4 @@ export const cartReducer = (state: CartState, action: CartAction): CartState => 
         default:
             return state;
     }
-  };
-  
+};
