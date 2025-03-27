@@ -13,6 +13,7 @@ const Book = () => {
     const { dispatch, state:{cartItems} } = useCart();
     useEffect(()=>{
         //fetch the book
+        
         const book:FullBookInfo = {_id:id ||'1',title: 'dskflj',
             coverImage:'book-1.png', 
             description:'dfskl fhseh eeop cmxlk', 
@@ -23,17 +24,19 @@ const Book = () => {
         }
         setBook(book);
         
-        document.title = 'Book-store|Book'+id        
+        document.title = 'Book-store|Book'+id;
+        throw new Error('oops')     
     },[id])
     if(!book) return <h1>Book not exist</h1>
 
 
     return (
-    <div className="max-w-lg shadow-md p-5">
-            <h1 className="text-2xl font-bold mb-6">{book!.title}</h1>
+    <div className="max-w-lg shadow-md p-5 bg-white rounded ">
+            <h1 className="text-2xl font-bold mb-6 text-gray-900">{book!.title}</h1>
 
             <div className=''>
                 <div>
+
                     <img
                         src={`${getImgUrl(book!.coverImage)}`}
                         alt={book!.title}

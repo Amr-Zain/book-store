@@ -12,7 +12,7 @@ const BookCard = ({ book }: BookCardProps) => {
   const { dispatch, state:{cartItems} } = useCart();
 
   return (
-    <div className="rounded-lg transition-shadow duration-300 hover:shadow-lg">
+    <div className="rounded-lg transition-shadow shadow duration-300 hover:shadow-lg">
       <div className="flex flex-col sm:flex-row sm:h-72  sm:justify-center gap-2">
 
         <div className="sm:h-72 sm:flex-shrink-0 lg:w-52 mx-auto  overflow-hidden rounded-md border border-gray-200">

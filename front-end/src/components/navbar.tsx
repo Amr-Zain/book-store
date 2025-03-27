@@ -4,8 +4,9 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 import avatarImg from "../assets/avatar.png"
 import { useCart } from "../context/cartContext";
+import { useAuth } from "../context/authContext";
 
-const currentUser = true;
+
 const token = true;
 const navigation = [
     {name: "Dashboard", href:"/user-dashboard"},
@@ -15,6 +16,8 @@ const navigation = [
 ]
 const Navbar = () => {
     const { state:{cartItems }} = useCart();
+    const auth = useAuth();
+    
     const  [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     return (
@@ -38,9 +41,9 @@ const Navbar = () => {
                 <div className="relative flex items-center md:space-x-3 space-x-2">
                     <div >
                         {
-                            currentUser ? <>
+                            auth?.currentUser ? <>
                             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                                <img src={avatarImg} alt="" className={`size-7 rounded-full ${currentUser ? 'ring-2 ring-blue-500' : ''}`} />
+                                <img src={avatarImg} alt="" className={`size-7 rounded-full ${auth.currentUser ? 'ring-2 ring-blue-500' : ''}`} />
                             </button>
                             {
                                 isDropdownOpen && (
@@ -57,7 +60,7 @@ const Navbar = () => {
                                             }
                                             <li>
                                                 <button
-                                                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">Logout</button>
+                                                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" onClick={auth?.logout}>Logout</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -69,10 +72,10 @@ const Navbar = () => {
                         }
                     </div>
                     
-                    <button className="hidden sm:block">
+                    <button className="hidden sm:block" >
                         <HiOutlineHeart className="size-6" />
                     </button>
-                    <Link to="/cart" className="bg-primary hover:bg-secondary hover:text-white p-1 sm:px-6 px-2 flex items-center rounded-sm">
+                    <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="bg-primary hover:bg-secondary hover:text-white p-1 sm:px-6 px-2 flex items-center rounded-sm">
                         <HiOutlineShoppingCart className='' />
                         {
                             <span className="text-sm font-semibold sm:ml-1">{cartItems.length}</span> 

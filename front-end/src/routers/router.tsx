@@ -8,6 +8,8 @@ import UserDashboard from "../pages/user/dashboard";
 import OrderPage from "../pages/user/orders";
 import Cart from "../pages/user/cart";
 import Checkout from "../pages/user/checkout";
+import PrivateRoute from "./protectedRoute";
+import NotFound from "../pages/user/not-found";
 
 const routes: RouteObject[] = [
   {
@@ -36,20 +38,24 @@ const routes: RouteObject[] = [
       },
       {
         path: "/user-dashboard",
-        element: <UserDashboard/>//private
+        element: <PrivateRoute><UserDashboard/></PrivateRoute>
       },
       {
         path: "/orders",
-        element: <OrderPage/>//private
+        element: <PrivateRoute><OrderPage/></PrivateRoute>
     },{
       path: "/cart",
       element: <Cart/>
     },{
       path: "/checkout",
-      element: <Checkout/>//private
+      element: <PrivateRoute><Checkout/></PrivateRoute>
     },
     ]
   },
+  {
+    path:'*',
+    element: <NotFound />
+  }
 ];
 
 const router = createBrowserRouter(routes);
