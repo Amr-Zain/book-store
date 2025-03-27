@@ -10,7 +10,7 @@ import { Book } from '../../types';
 
 
 interface BooksProps {
-    books: Book[] | null
+    books: Book[] | undefined
 }
 
 function BooksSlider({ books }: BooksProps ) {

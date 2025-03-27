@@ -1,5 +1,5 @@
 import { getImgUrl } from '../utils/url'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Book } from '../types'
 import { cartAddItem } from '../actions/cart'
 import { useCart } from '../context/cartContext'
@@ -10,19 +10,27 @@ interface BookCardProps {
 }
 const BookCard = ({ book }: BookCardProps) => {
   const { dispatch, state:{cartItems} } = useCart();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Pass the entire book object via state
+    navigate(`/books/${book._id}`, { 
+      state: { 
+        book 
+      } 
+    });
+  };
 
   return (
     <div className="rounded-lg transition-shadow shadow duration-300 hover:shadow-lg">
       <div className="flex flex-col sm:flex-row sm:h-72  sm:justify-center gap-2">
 
-        <div className="sm:h-72 sm:flex-shrink-0 lg:w-52 mx-auto  overflow-hidden rounded-md border border-gray-200">
-          <Link to={`/books/${book._id}`} className="block h-full">
+        <div  onClick={handleClick} className="sm:h-72 sm:flex-shrink-0 lg:w-52 mx-auto  overflow-hidden rounded-md border border-gray-200">
+          
             <img
               src={`${getImgUrl(book?.coverImage)}`}
               alt={book.title}
               className="w-full  bg-cover p-1 transition-transform duration-200 hover:scale-105 cursor-pointer"
             />
-          </Link>
         </div>
 
         <div className="flex flex-col  justify-between flex-grow pr-2 py-3">

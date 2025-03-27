@@ -1,49 +1,74 @@
-import {  useState } from 'react';
-import { Book, Category } from '../../types';
-import BooksSlider from './booksSlider';
-
-
-const slides: Book[] = [
-    {_id:'1',title: 'dskflj',coverImage:'book-1.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
-    {_id:'2',title: 'dskflj',coverImage:'book-2.png',description:'dfskl fhseh eeop cmxlak', newPrice:250,oldPrice:300,category:'Business'},
-    {_id:'3',title: 'dskflj',coverImage:'book-3.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300 ,category:'Business'},
-    {_id:'4',title: 'dskflj',coverImage:'book-4.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
-    {_id:'5',title: 'dskflj',coverImage:'book-1.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
-    {_id:'6',title: 'dskflj',coverImage:'book-2.png',description:'dfskl fhseh eeop cmxlak', newPrice:250,oldPrice:300,category:'Business' },
-    {_id:'7',title: 'dskflj',coverImage:'book-3.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
-    {_id:'8',title: 'dskflj',coverImage:'book-4.png',description:'dfskl fhseh eeop cmxlk', newPrice:250,oldPrice:300,category:'Business' },
-];
+import { useState } from "react";
+import { Category } from "../../types";
+import BooksSlider from "./booksSlider";
+import { useQuery } from "@tanstack/react-query";
+import { listBooks } from "../../api";
+import { FiAlertTriangle } from "react-icons/fi";
 
 type CategoriesList = Category | "Choose a categ";
 
-const categories: CategoriesList[] = ["Choose a categ", "Business", "Fiction", "Horror", "Adventure"]
+const categories: CategoriesList[] = [
+  "Choose a categ",
+  "Business",
+  "Fiction",
+  "Horror",
+  "Adventure",
+];
 
 const TopSellers = () => {
-    
-    const [selectedCategory, setSelectedCategory] = useState("Choose a categ");
+  const [selectedCategory, setSelectedCategory] = useState<
+    Category | "Choose a categ"
+  >("Choose a categ");
+  const { isPending, error, data } = useQuery({
+    queryKey: ["trending", selectedCategory],
+    queryFn: () => listBooks(selectedCategory, true),
+    staleTime: 1000 * 60 * 15,
+  });
 
-
-    const filteredBooks = selectedCategory === "Choose a categ" ? slides : null
-    
-    console.log(categories,selectedCategory)
-
-    return (
-        <div className='py-5'>
-            <h2 className='text-3xl font-semibold mb-6'>Top Sellers</h2>
-            <div className='mb-8 flex items-center'>
-                <select
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    name="category" id="category" className='border bg-blackBG border-gray-300 rounded-md px-4 py-2 focus:outline-none'>
-                    {
-                        categories.map((category, index) => (
-                            <option key={index} value={category}>{category}</option>
-                        ))
-                    }
-                </select>
-            </div>
-            <BooksSlider books={filteredBooks}/>
+  return (
+    <div className="py-5">
+      <h2 className="text-3xl font-semibold mb-6">Top Sellers</h2>
+      <div className="mb-8 flex items-center">
+        <select
+          onChange={(e) =>
+            setSelectedCategory(e.target.value as Category | "Choose a categ")
+          }
+          value={selectedCategory}
+          className="w-full max-w-xs px-4 py-2 text-md border border-gray-700 rounded-lg text-gray-900 
+            cursor-pointer transition-all hover:border-gray-500 focus:outline-none appearance-none"
+        >
+          {categories.map((category, index) => (
+            <option
+              key={index}
+              value={category}
+              className="bg-gray-100 text-gray-900 hover:bg-gray-500"
+            >
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error ? (
+        <div className="text-red-600">
+          Failed to load recommendations: {error.message}
         </div>
-    )
-}
+      ) : null}
+      {data?.length === 0 && (
+        <div className="mt-4">
+          <p className="inline-flex items-center gap-2 bg-red-50 text-red-600 p-3 rounded-lg border border-red-100 text-sm">
+            <FiAlertTriangle className="text-lg" />
+            No books found in{" "}
+            <span className="font-medium ml-1">{selectedCategory}</span>
+          </p>
+        </div>
+      )}{" "}
+      {isPending ? (
+        <div className="text-gray-500">Loading recommendations...</div>
+      ) : (
+        <BooksSlider books={data || []} />
+      )}
+    </div>
+  );
+};
 
-export default TopSellers
+export default TopSellers;

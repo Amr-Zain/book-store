@@ -3,7 +3,7 @@ import { ErrorBoundary } from "react-error-boundary"; // Note: Correct import is
 import { FallbackProps } from "react-error-boundary";
 import { useNavigate } from "react-router-dom";
 
-function ErrorFallback({ resetErrorBoundary }: FallbackProps) {
+function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <div className="min-h-screen bg-red-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full">
@@ -25,6 +25,9 @@ function ErrorFallback({ resetErrorBoundary }: FallbackProps) {
           <h2 className="mt-2 text-2xl font-bold text-gray-900">
             Oops, something went wrong!
           </h2>
+          <p className="mt-2 text-2xl font-bold text-gray-700">
+            {error.message}
+          </p>
           
           <button
             onClick={resetErrorBoundary}
