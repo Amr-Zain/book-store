@@ -10,6 +10,7 @@ import Cart from "../pages/user/cart";
 import Checkout from "../pages/user/checkout";
 import PrivateRoute from "./protectedRoute";
 import NotFound from "../pages/user/not-found";
+import DashboardLayout from "../components/admin/shared";
 
 const routes: RouteObject[] = [
   {
@@ -50,6 +51,16 @@ const routes: RouteObject[] = [
       path: "/checkout",
       element: <PrivateRoute><Checkout/></PrivateRoute>
     },
+    ]
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout/>,
+    children:[
+      {
+        index:true,
+        element: <></>
+      }
     ]
   },
   {

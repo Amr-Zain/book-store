@@ -7,7 +7,7 @@ import { useCart } from '../../context/cartContext';
 
 const Cart = () => {
 
-    const {state:{cartItems, totalPrice}, }  = useCart()
+    const {state:{cartItems}, }  = useCart()
     
     return (
         <div className="flex mt-12 h-full flex-col overflow-hidden bg-white shadow-xl">
@@ -32,7 +32,7 @@ const Cart = () => {
             </div>
             </div>
     
-            <CartFooter totalPrice={totalPrice} />
+            <CartFooter />
         </div>
     );
 };

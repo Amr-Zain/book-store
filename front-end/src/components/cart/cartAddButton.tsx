@@ -27,6 +27,7 @@ function CartAddButton({ isAdded, add }: { isAdded: boolean; add: () => void }) 
             className={`group flex justify-center h-8 w-full max-w-[200px] relative transition-all duration-300 ease-in-out items-center gap-1 text-sm overflow-hidden ${
                 isClicked ? 'clicked' : ''
             }`}
+            aria-label={'Add Book to Cart'}
         >
             <span className={`absolute z-30 left-1/2 top-1/2 text-sm text-white transform -translate-x-1/2 -translate-y-1/2 transition-opacity ${
                 isAdded ? 'opacity-0' : 'opacity-100'

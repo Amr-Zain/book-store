@@ -4,6 +4,7 @@ import BooksSlider from "./booksSlider";
 import { useQuery } from "@tanstack/react-query";
 import { listBooks } from "../../api";
 import { FiAlertTriangle } from "react-icons/fi";
+import SliderItemsSkeleton from "./sliderItemsSkeleton";
 
 type CategoriesList = Category | "Choose a categ";
 
@@ -19,12 +20,12 @@ const TopSellers = () => {
   const [selectedCategory, setSelectedCategory] = useState<
     Category | "Choose a categ"
   >("Choose a categ");
-  const { isPending, error, data } = useQuery({
-    queryKey: ["trending", selectedCategory],
-    queryFn: () => listBooks(selectedCategory, true),
-    staleTime: 1000 * 60 * 15,
-  });
 
+  const { isPending, error, data } = useQuery({
+    queryKey: ["trending-books", selectedCategory],
+    queryFn: () => listBooks(selectedCategory, true),
+    staleTime: 0,
+  });
   return (
     <div className="py-5">
       <h2 className="text-3xl font-semibold mb-6">Top Sellers</h2>
@@ -50,7 +51,7 @@ const TopSellers = () => {
       </div>
       {error ? (
         <div className="text-red-600">
-          Failed to load recommendations: {error.message}
+          Failed to load top sales: {error.message}
         </div>
       ) : null}
       {data?.length === 0 && (
@@ -62,13 +63,10 @@ const TopSellers = () => {
           </p>
         </div>
       )}{" "}
-      {isPending ? (
-        <div className="text-gray-500">Loading recommendations...</div>
-      ) : (
-        <BooksSlider books={data || []} />
-      )}
+      {isPending ?  <SliderItemsSkeleton /> : <BooksSlider books={data || []} />}
     </div>
   );
 };
 
 export default TopSellers;
+
