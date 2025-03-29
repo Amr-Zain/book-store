@@ -1,5 +1,5 @@
 import { ImBook } from "react-icons/im";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 function OrederProducts({ productIds }: { productIds: string[]}) {
     return ( <div className="border-t border-t-gray-200 pt-4 ml-4">

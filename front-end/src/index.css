@@ -12,6 +12,7 @@
     --animate-box: box 1.5s ease-in-out forwards;
     --animate-txt1: txt1 1.5s ease-in-out forwards;
     --animate-txt2: txt2 1.5s ease-in-out forwards;
+    
     @keyframes cart {
       0% {
         left: -10%;

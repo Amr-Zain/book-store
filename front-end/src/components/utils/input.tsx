@@ -3,21 +3,23 @@ type prps = {
   label: string;
   type: string;
   error: string | undefined;
+  placeholder: string;
+  [key: string]: unknown;
 };
 
-function CheckoutInput({ id, label, type, error }: prps) {
+function Input({ id, label, type, error,placeholder,...res }: prps) {
   return (
-    <div key={id}>
+    <div key={id} className="mb-2">
       <label htmlFor={id} className="block text-sm font-medium mb-1">
         {label}
       </label>
       <input
         id={id}
-        name={id}
         type={type}
-        placeholder={label}
+        placeholder={placeholder??label}
+        {...res}
         className={`w-full p-2 border border-gray-200 shadow-sm rounded bg-gray-50 focus:outline-none ${
-          error ? "border-red-500" : ""
+          error ? "border-red-500" : " focus:border-primary focus:ring-primary"
         }`}
         aria-describedby={`${id}-error`}
       />
@@ -30,4 +32,4 @@ function CheckoutInput({ id, label, type, error }: prps) {
   );
 }
 
-export default CheckoutInput;
+export default Input;

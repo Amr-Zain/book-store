@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuth } from '../context/authContext'
-import { Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router'
 
 const PrivateRoute: React.FC<{children: React.ReactNode}> = ({children}) => {
     const currentUser = useAuth()?.currentUser;

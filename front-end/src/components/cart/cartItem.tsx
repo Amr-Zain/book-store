@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { getImgUrl } from '../../utils/url';
 import { CartItemType } from '../../types/cartReducer';
 import { GoPlus } from 'react-icons/go';

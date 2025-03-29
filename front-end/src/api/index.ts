@@ -53,6 +53,12 @@ export const getBook = async (id: string): Promise<FullBookInfo> => {
     console.log(book)
     return book;
 }
+export const deleteBook = async (id: string): Promise<void> => {
+    await api.delete(`books/${id}`);
+}
+export const updateBook = async (id: string): Promise<void> => {
+    await api.put(`books/${id}`);
+}
 
 export const postOrder = async (order: Omit<Order, '_id' | 'createdAt'>): Promise<Order> => {
     const { data } = await api.post('books', order);

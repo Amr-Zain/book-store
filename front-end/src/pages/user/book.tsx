@@ -1,11 +1,10 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { getImgUrl } from "../../utils/url";
 import { useCart } from "../../context/cartContext";
 import CartAddButton from "../../components/cart/cartAddButton";
 import { cartAddItem } from "../../actions/cart";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBook } from "../../api";
 import { FiAlertTriangle } from "react-icons/fi";
+import useBook from "../../hooks/useBook";
 
 const Book = () => {
   const { id } = useParams();
@@ -13,20 +12,8 @@ const Book = () => {
     dispatch,
     state: { cartItems },
   } = useCart();
-  const location = useLocation();
-  const queryClient = useQueryClient();
-  if (location.state?.book) {
-    queryClient.setQueryData(["books", id], location.state.book);
-  }
-  const {
-    isPending,
-    error,
-    data: book,
-  } = useQuery({
-    queryKey: ["books", id],
-    queryFn: () => getBook(id!),
-  });
 
+  const { book, isPending, error } = useBook(id)
   // Loading state
   if (isPending) {
     return (

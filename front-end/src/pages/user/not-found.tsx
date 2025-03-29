@@ -1,5 +1,5 @@
 // src/pages/NotFound.tsx
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function NotFound() {
   const navigate = useNavigate();

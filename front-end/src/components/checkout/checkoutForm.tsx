@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { useCart } from "../../context/cartContext";
-import CheckoutInput from "./input";
+import CheckoutInput from "../utils/input";
 import Button from "../utils/button";
 import { OrderInfoForm } from "../../types/order";
 import { postOrder } from "../../api";

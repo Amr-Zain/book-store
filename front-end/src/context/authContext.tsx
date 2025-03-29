@@ -66,6 +66,7 @@ export const AuthProvieder: FC<{ children: React.ReactNode }> = ({
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
         setCurrentUser(user);
+        console.log(user)
         localStorage.setItem("authedUser", JSON.stringify(user));
       } else {
         setCurrentUser(null);

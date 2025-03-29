@@ -14,7 +14,7 @@ const DashboardButton = ({
   }) => (
     <Link
       to={to}
-      className={`inline-flex items-center px-5 py-3 rounded-md mb-3 ${
+      className={`inline-flex items-center px-2 md:px-5 py-2 md:py-3 rounded-md ${
         variant === 'solid' 
           ? 'text-white bg-primary hover:bg-primary-dark' 
           : 'text-primary  focus:bg-purple-100 border border-primary'

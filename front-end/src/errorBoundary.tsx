@@ -1,7 +1,7 @@
 // src/components/ErrorBoundary.tsx
 import { ErrorBoundary } from "react-error-boundary"; // Note: Correct import is 'react-error-boundary'
 import { FallbackProps } from "react-error-boundary";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (

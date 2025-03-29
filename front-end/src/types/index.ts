@@ -6,6 +6,7 @@ export interface Book {
     newPrice: number
     oldPrice: number
     category?:Category
+    trending?:boolean
   }
 export interface FullBookInfo extends Book{
   author: string;
