@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { validateToken } from '../utils/jwt';
+import { auth, firestore } from 'firebase-admin';
 
 const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
     let token = req.headers['authorization'];
@@ -8,13 +8,26 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
     }
     token = token.split(' ')[1];
     try {
-        const user = validateToken({ token });
-        req['user'] = user;
+        const decoded = await auth().verifyIdToken(token);
+        const userSnapshot = await firestore()
+            .collection('users')
+            .where('id', '==', decoded.uid)  
+            .limit(1)
+            .get();
+
+        if (userSnapshot.empty) {
+            console.log(`No user document found with UID: ${decoded.uid}`);
+        }
+        const userDoc = userSnapshot.docs[0];
+
+        req['user'] = {...userDoc.data()};
+        console.log(req['user'])
         next();
     } catch (error) {
         console.error('Token is invalid:', error);
         next();
     }
+
 };
 
 
