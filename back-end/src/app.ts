@@ -8,13 +8,16 @@ import notFound from "./middleware/not-found";
 import errorHandler from "./middleware/error";
 import authenticateUser from "./middleware/authentication";
 import orderRouter from "./routes/order";
-import userRouter from "./routes/user";
+import { initializeApp, ServiceAccount } from 'firebase-admin/app';
+import { credential } from "firebase-admin";
 
-const port = process.env.PORT || 3030;
+const port = process.env.PORT || 3030; 
 
 
 
 env.config()
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const  serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 const app = express();
 // middleware
 app.use(express.json());
@@ -25,12 +28,16 @@ app.use(cors({
 }));
 app.use(authenticateUser as unknown as express.RequestHandler);
 
+//const credentialPath = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+initializeApp({
+  credential: credential.cert(serviceAccount as ServiceAccount),
+});
 
+ 
 
 // routes
 app.use('/api/v1/books',bookRouter);
 app.use('/api/v1/orders',orderRouter);
-app.use('/api/v1/users',userRouter)
 
 
 
