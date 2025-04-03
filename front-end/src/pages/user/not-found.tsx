@@ -10,7 +10,6 @@ export default function NotFound() {
         <div className="animate-pulse">
           <h1 className="text-9xl font-bold text-primary mb-4">404</h1>
         </div>
-
         <div className="space-y-4">
           <h2 className="text-3xl font-semibold text-gray-800">
             Oops! Page Not Found

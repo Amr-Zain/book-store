@@ -4,7 +4,7 @@ import logo from '../assets/footer-logo.png';
 import Button from "./utils/button";
 const Footer = () => {
   return (
-    <footer className="bg-secondary text-white py-10 px-4">
+    <footer className="bg-secondary  px-6 md:px-10 lg:px-14 xl:px-18 2xl:px-24 text-white py-10">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="md:w-1/2 w-full ">
           <img src={logo} alt="Logo" className="mb-5 w-36 mx-auto" />

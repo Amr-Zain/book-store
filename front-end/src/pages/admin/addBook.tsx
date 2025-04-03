@@ -3,16 +3,11 @@ import Input from "../../components/utils/input";
 import SelectField from "../../components/utils/selectField";
 import Button from "../../components/utils/button";
 import { useEffect } from "react";
+import { postBook } from "../../api";
+import { Book, FullBookInfo } from "../../types";
+import { useAuth } from "../../context/authContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type FormValues = {
-  title: string;
-  description: string;
-  category: string;
-  oldPrice: string;
-  newPrice: string;
-  trending: boolean;
-  coverImage: FileList;
-};
 
 const AddBook = () => {
   const {
@@ -21,28 +16,22 @@ const AddBook = () => {
     formState: { errors, isSubmitting },
     reset,
     setError,
-  } = useForm<FormValues>();
+  } = useForm<Omit<FullBookInfo & {coverImage: FileList},'author'>>();
+  const currentUser = useAuth()?.currentUser;
+  const queryClient = useQueryClient();
 
-  const onSubmit = async (data: FormValues) => {
-    try {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-      formData.append("oldPrice", data.oldPrice);
-      formData.append("newPrice", data.newPrice);
-      formData.append("trending", String(data.trending));
-      formData.append("coverImage", data.coverImage[0]);
-
-      // await api.addBook(formData);
-      console.log("Form data:", Object.fromEntries(formData));
-
+  const { mutate,isSuccess } = useMutation({
+    mutationFn: (formData: FullBookInfo) => postBook(formData as unknown as Book),
+    mutationKey:['books'],
+    onSuccess: () => {
       reset();
       const fileInput = document.getElementById(
         "coverImage"
       ) as HTMLInputElement;
       if (fileInput) fileInput.value = "";
-    } catch (error) {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+    },
+    onError:(error)=>{
       setError("root", {
         type: "manual",
         message:
@@ -51,11 +40,23 @@ const AddBook = () => {
             : "Failed to submit form. Please try again.",
       });
     }
+  });
+  const onSubmit = async (data: Omit<FullBookInfo & {coverImage: FileList},'author'>) => {
+      const formData = new FormData() ;
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("category", data.category as string);
+      formData.append("oldPrice", data.oldPrice as unknown as Blob);
+      formData.append("newPrice", data.newPrice as unknown as Blob);
+      formData.append("trending", String(data.trending));
+      formData.append("coverImage", data.coverImage[0].name);
+      formData.append("author", currentUser!.name);
+      mutate(formData as unknown as FullBookInfo);
   };
-  
-    useEffect(()=>{
-      document.title = 'Dashboard|Add-Book'
-    },[])
+
+  useEffect(() => {
+    document.title = "Dashboard|Add-Book";
+  }, []);
   return (
     <div className="max-w-lg mx-auto mt-6 md:p-6 p-3 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Book</h2>
@@ -91,7 +92,6 @@ const AddBook = () => {
           options={[
             { value: "", label: "Choose A Category" },
             { value: "business", label: "Business" },
-            { value: "technology", label: "Technology" },
             { value: "fiction", label: "Fiction" },
             { value: "horror", label: "Horror" },
             { value: "adventure", label: "Adventure" },
@@ -145,7 +145,7 @@ const AddBook = () => {
               message: "Price cannot be negative",
             },
             pattern: {
-              value: /^[0-9]+(\.[0-9]+)?$/, 
+              value: /^[0-9]+(\.[0-9]+)?$/,
               message: "Must be a valid number",
             },
             validate: (value, { oldPrice }) =>
@@ -183,7 +183,9 @@ const AddBook = () => {
         {errors.root && (
           <p className="text-red-500 text-sm mb-4">{errors.root.message}</p>
         )}
-
+        {isSuccess && (
+          <p className="text-green-500 bg-green-200 py-2 pl-2 rounded border-1 border-green-300 text-sm mb-4">Book added Successfully</p>
+        )}
         <Button
           type="submit"
           disabled={isSubmitting}

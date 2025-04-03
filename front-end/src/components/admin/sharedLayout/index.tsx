@@ -1,19 +1,15 @@
-import { Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
 import Sidebar from "./sidebar";
 import Header from "./header";
 import DashboardButton from "./dashboardButton";
 import { GoPencil, GoPlus } from "react-icons/go";
 
 const DashboardLayout = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    navigate("/");
-  };
+  
 
   return (
-    <section className="flex md:bg-gray-100 min-h-screen overflow-hidden">
-      <Sidebar onLogout={handleLogout} />
+    <section className="flex md:bg-gray-100 min-h-screen">
+      <Sidebar/>
 
       <div className="flex-grow text-gray-800">
         <Header />

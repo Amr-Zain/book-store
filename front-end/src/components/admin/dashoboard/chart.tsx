@@ -1,4 +1,3 @@
-// src/components/RevenueChart.tsx
 import { useEffect, useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { 
@@ -12,7 +11,6 @@ import {
   type ChartOptions
 } from 'chart.js';
 
-// Register Chart.js components
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const RevenueChart = () => {
@@ -20,7 +18,6 @@ const RevenueChart = () => {
   const chartRef = useRef<any>(null);
   const revenueData = [500, 700, 800, 600, 750, 900, 650, 870, 960, 1020, 1100, 1150];
 
-  // Chart cleanup effect
   useEffect(() => {
     const chartInstance = chartRef.current;
     
@@ -44,7 +41,6 @@ const RevenueChart = () => {
     ],
   };
 
-  // Properly typed options
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,

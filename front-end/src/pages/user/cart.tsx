@@ -11,9 +11,7 @@ const Cart = () => {
     })
 
 return (
-    <div className="">
         <CartComponents />
-    </div>
     );
   };
   

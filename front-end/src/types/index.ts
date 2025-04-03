@@ -14,6 +14,13 @@ export interface FullBookInfo extends Book{
 
 }
 
+export type Statistics = {
+  totalOrders: number
+  totalSales: number
+  trendingBooks: number
+  totalBooks: number
+}
+
 export type Category =  "Business" | "Fiction" | "Horror" | "Adventure";
 
   

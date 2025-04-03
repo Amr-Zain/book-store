@@ -43,14 +43,14 @@ const CartItem = ({ item }: CartItemProps) => {
           <button
             onClick={decrement}
             disabled={item.quantity <= 1}
-            className="px-2 py-1 border text-indigo-600 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-2 py-1 border text-primary rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <LuMinus />
           </button>
           <span className="px-2">{item.quantity}</span>
           <button
             onClick={increment}
-            className="px-2 py-1 border text-indigo-600 rounded-md hover:bg-gray-100"
+            className="px-2 py-1 border text-primary rounded-md hover:bg-gray-100"
           >
             <GoPlus />
           </button>
@@ -59,7 +59,7 @@ const CartItem = ({ item }: CartItemProps) => {
           <button
             type="button"
             onClick={handleRemoveItem}
-            className="font-medium text-indigo-600 hover:text-indigo-500"
+            className="font-medium text-primary hover:text-secondary transition-all cursor-pointer"
           >
             Remove
           </button>

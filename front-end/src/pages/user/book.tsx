@@ -12,12 +12,11 @@ const Book = () => {
     dispatch,
     state: { cartItems },
   } = useCart();
+  const { book, isPending, error } = useBook(id);
 
-  const { book, isPending, error } = useBook(id)
-  // Loading state
   if (isPending) {
     return (
-      <div className="max-w-lg mx-auto p-5">
+      <div className="max-w-lg p-5">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-gray-200 rounded w-3/4"></div>
           <div className="h-64 bg-gray-200 rounded"></div>
@@ -79,11 +78,11 @@ const Book = () => {
             {book.author || "Unknown"}
           </p>
           <p className="text-gray-700">
-            <strong className="text-gray-900">Published:</strong>
+            <strong className="text-gray-900">Published:</strong>{" "}
             {new Date(book.createdAt).toLocaleDateString()}
           </p>
           <p className="text-gray-700 capitalize">
-            <strong className="text-gray-900">Category:</strong> {book.category}
+            <strong className="text-gray-900">Category:</strong> {" "}{book.category}
           </p>
           <p className="text-gray-700">
             <strong className="text-gray-900">Description:</strong>

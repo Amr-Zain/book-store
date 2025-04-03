@@ -1,34 +1,41 @@
 import {
-    browserLocalPersistence,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
+  browserLocalPersistence,
   setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  User,
   UserCredential,
-  GoogleAuthProvider 
+  GoogleAuthProvider,
+  onIdTokenChanged,
 } from "firebase/auth";
-import {
-  createContext,
-  FC,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, FC, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.config";
+import { createUser, getUserById } from "../firebase/service";
+
+export type AppUser = {
+  id: string;
+  email: string;
+  role: "user" | "admin";
+  name: string;
+};
 
 type AuthContextType = {
-  currentUser: User | null;
-  register: (email: string, password: string) => Promise<UserCredential>;
-  login: (email: string, password: string) => Promise<UserCredential>;
+  currentUser: AppUser | null;
+  loading: boolean;
+  register: (
+    email: string,
+    password: string,
+    role: "user" | "admin",
+    name: string
+  ) => Promise<UserCredential>;
+  login: (email: string, password: string) => Promise<AppUser>;
   signInWithGoogle: () => Promise<UserCredential>;
-  logout: () => void;
-}
+  logout: () => Promise<void>;
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -36,17 +43,31 @@ export const useAuth = () => {
 export const AuthProvieder: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const register = async (email: string, password: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    role: "user" | "admin",
+    name: string
+  ) => {
     await setPersistence(auth, browserLocalPersistence);
-    return await createUserWithEmailAndPassword(auth, email, password);
+    const credUser = await createUser({
+      name,
+      email: email.toLowerCase(),
+      role,
+      password,
+    });
+    return credUser;
   };
   const login = async (email: string, password: string) => {
     await setPersistence(auth, browserLocalPersistence);
-    return await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return await getUserById(userCredential.user.uid);
+
   };
-  
+
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     await setPersistence(auth, browserLocalPersistence);
@@ -57,24 +78,31 @@ export const AuthProvieder: FC<{ children: React.ReactNode }> = ({
   };
   const value: AuthContextType = {
     currentUser,
+    loading,
     register,
     login,
     signInWithGoogle,
     logout,
   };
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
-      if (user) {
+    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const token = await firebaseUser.getIdToken();
+        localStorage.setItem("accessToken", token);
+
+        const user = await getUserById(firebaseUser.uid);
+
         setCurrentUser(user);
-        console.log(user)
         localStorage.setItem("authedUser", JSON.stringify(user));
+        setLoading(false);
       } else {
         setCurrentUser(null);
         localStorage.removeItem("authedUser");
+        localStorage.removeItem("accessToken");
       }
     });
 
-    return () => unsubscribe();
+    return  () => unsubscribe();;
   }, []);
   return <AuthContext value={value}>{children}</AuthContext>;
 };

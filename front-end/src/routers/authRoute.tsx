@@ -2,10 +2,9 @@ import React from "react";
 import { useAuth } from "../context/authContext";
 import { Navigate } from "react-router";
 
-const PrivateRoute: React.FC<{
+const AuthRoute: React.FC<{
   children: React.ReactNode;
-  roles: ["user" | "admin"];
-}> = ({ children, roles }) => {
+}> = ({ children }) => {
   const auth = useAuth();
   if (auth!.loading)
     return (
@@ -13,17 +12,16 @@ const PrivateRoute: React.FC<{
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     );
-
-  if (!auth!.currentUser) return <Navigate to="/login" replace />;
-
-  if (!roles.includes(auth!.currentUser.role)) {
+  if (auth!.currentUser)
     return (
-      <h3 className="w-full bg-red-100 text-red-500 text-center py-4 mt-10 rounded">
-        Not Authorized
-      </h3>
+      <Navigate
+        to={
+          auth!.currentUser.role === "user" ? "/user-dashboard" : "/dashboard"
+        }
+        replace
+      />
     );
-  }
   return children;
 };
 
-export default PrivateRoute;
+export default AuthRoute;
