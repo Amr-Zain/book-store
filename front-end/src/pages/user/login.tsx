@@ -17,8 +17,10 @@ const Login = () => {
     const password = formData.get("password") as string;
 
     try {
-      await auth?.login(email, password);
-      navigate("/");
+      const user = await auth?.login(email, password);
+      console.log(auth?.currentUser)
+      if(user?.role === 'user')navigate("/");
+      else if(user?.role === 'admin') navigate('/dashboard')
       return { error: undefined };
     } catch (error) {
       let errorMessage = "Network error. Please try again.";

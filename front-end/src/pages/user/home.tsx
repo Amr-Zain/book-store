@@ -5,7 +5,7 @@ import Recommeneded from "../../components/home/recommended";
 
 function Home() {
     useEffect(()=>{
-        document.title = 'Book-Store| Home'
+        document.title = 'Book-Store|Home'
     })
     return ( <div>
         <Banner />

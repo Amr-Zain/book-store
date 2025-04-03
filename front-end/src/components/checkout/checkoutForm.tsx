@@ -1,35 +1,47 @@
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router";
 import { useCart } from "../../context/cartContext";
-import CheckoutInput from "../utils/input";
+import Input from "../utils/input";
 import Button from "../utils/button";
-import { OrderInfoForm } from "../../types/order";
+import { Order, OrderInfoForm } from "../../types/order";
 import { postOrder } from "../../api";
-import { useState } from "react";
-import { validateCheckOutForm } from "../../utils/validateCheckOut";
-
-const formInputs = [
-  { id: "name", label: "Full Name", type: "text" },
-  { id: "email", label: "Email", type: "email" },
-  { id: "phone", label: "Phone", type: "tel" },
-  { id: "address", label: "Address", type: "text" },
-  { id: "city", label: "City", type: "text" },
-  { id: "country", label: "Country", type: "text" },
-  { id: "state", label: "State", type: "text" },
-  { id: "zipcode", label: "Zipcode", type: "text" },
-];
+import { useAuth } from "../../context/authContext";
+import { useForm } from "react-hook-form";
+import { restCart } from "../../actions/cart";
 
 function CheckoutForm() {
   const navigate = useNavigate();
-  const [isChecked, setIsChecked] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<Partial<OrderInfoForm>>({});
   const {
     state: { cartItems, totalPrice },
+    dispatch
   } = useCart();
+  const currentUser = useAuth()?.currentUser;
+  
+  const formInputs = [
+    { id: "name", label: "Full Name", type: "text", disabled:true,placeholder:'', value: currentUser?.name},
+    { id: "email", label: "Email", type: "email", disabled:true, placeholder:'', value: currentUser?.email },
+    { id: "phone", label: "Phone", type: "tel", placeholder: 'Enter Your phone',required: true },
+    { id: "address", label: "Address", type: "text", placeholder:'Enter your Address',required: true },
+    { id: "city", label: "City", type: "text", placeholder:'Enter your City',required: true },
+    { id: "country", label: "Country", type: "text", placeholder:'Enter your Country',required: true },
+    { id: "state", label: "State", type: "text", placeholder:'Enter your',required: true },
+    { id: "zipcode", label: "Zipcode", type: "text", placeholder:'Enter your',required: true },
+  ];
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<OrderInfoForm&{terms: boolean}>({
+    defaultValues: {
+      email: currentUser?.email || "",
+    },
+  });
   const { mutate, isError, error, isPending } = useMutation({
     mutationFn: postOrder,
+    mutationKey:['orders'],
     onSuccess: () => {
+      dispatch(restCart())
       navigate("/orders");
     },
     onSettled: () => {
@@ -37,21 +49,24 @@ function CheckoutForm() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const [hasError, errors, order] = validateCheckOutForm(
-        formData,
-        cartItems,
-        totalPrice
-    );
-    if (hasError) {
-        setFieldErrors(errors);
-        return;
+  const onSubmit = (data: OrderInfoForm) => {
+
+    const order: Omit<Order, "_id" | "createdAt"> = {
+      address: {
+        city: data.city,
+        country: data.country,
+        state: data.state,
+        zipcode: data.zipcode,
+      },
+      productIds: cartItems.map((item) => item._id),
+      totalPrice: Number(totalPrice.toFixed(2)),
+      name: data.name,
+      email: data.email,
+      phone: data.phone
     }
-    setFieldErrors({});
     mutate(order);
   };
+
 
   if (cartItems.length === 0) {
     return (
@@ -62,7 +77,7 @@ function CheckoutForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {isError && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
           {error instanceof Error
@@ -73,22 +88,27 @@ function CheckoutForm() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {formInputs.map((field) => (
-          <CheckoutInput
+          <Input
             key={field.id}
             {...field}
-            error={fieldErrors[field.id as keyof OrderInfoForm]}
+            {...register(field.id as keyof OrderInfoForm, {
+              required: field.required ? `${field.label} is required` : false,
+            })}
+            error={errors[field.id as keyof OrderInfoForm]?.message}
           />
         ))}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div>
+
+        <div className="flex items-center gap-2">
         <input
           type="checkbox"
           id="terms"
-          checked={isChecked}
-          onChange={(e) => setIsChecked(e.target.checked)}
+          {...register("terms", {
+            required: "You must accept the terms and conditions",
+          })}
           className="form-checkbox h-4 w-4"
-          required
         />
         <label htmlFor="terms" className="text-sm">
           I agree to the{" "}
@@ -100,17 +120,22 @@ function CheckoutForm() {
             Shipping Policy
           </Link>
         </label>
+        </div>
+        {errors.terms && (
+          <p className="text-red-500 text-sm mt-2">{errors.terms.message}</p>
+        )}
       </div>
 
       <Button
         type="submit"
-        disabled={!isChecked || isPending}
+        disabled={isSubmitting||isPending}
         className="w-full"
       >
         {isPending ? "Processing..." : "Place Order"}
       </Button>
     </form>
   );
+
 }
 
 export default CheckoutForm;

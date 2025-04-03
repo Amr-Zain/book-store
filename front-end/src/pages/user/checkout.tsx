@@ -7,7 +7,7 @@ const CheckoutPage = () => {
         document.title = 'Book Store|Checkout'
     })
 return (
-    <section className="min-h-screen p-6 bg-blackBG rounded shadow my-4 flex items-center justify-center">
+    <section className="min-h-[70vh] p-6 bg-blackBG rounded shadow my-4 flex items-center justify-center">
         <div className="container max-w-screen-lg mx-auto">
             <CheckoutHeader />
             <div className="bg-white rounded shadow-lg p-8">

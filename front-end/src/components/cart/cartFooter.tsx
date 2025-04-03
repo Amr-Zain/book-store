@@ -14,17 +14,10 @@ const CartFooter = () => {
       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
       
       <div className="mt-6">
-        {isCartEmpty ? (
-          <button
-            disabled
-            className="flex items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-white cursor-not-allowed w-full"
-          >
-            Checkout
-          </button>
-        ) : (
+        {!isCartEmpty && (
           <Link
             to="/checkout"
-            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors duration-200 w-full"
+            className="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-secondary transition-colors duration-200 w-full"
           >
             Checkout
           </Link>
@@ -32,10 +25,9 @@ const CartFooter = () => {
       </div>
 
       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-        <span>or</span>
         <Link
           to="/"
-          className="font-medium text-indigo-600 hover:text-indigo-500 ml-1"
+          className="font-medium text-primary hover:text-secondary ml-1"
         >
           Continue Shopping
           <span aria-hidden="true"> &rarr;</span>

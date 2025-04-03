@@ -5,60 +5,80 @@ import Input from "../../components/utils/input";
 import Button from "../../components/utils/button";
 import useBook from "../../hooks/useBook";
 import SelectField from "../../components/utils/select";
+import { FullBookInfo } from "../../types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateBook } from "../../api";
 
-type FormValues = {
-  title: string;
-  description: string;
-  category: string;
-  oldPrice: string;
-  newPrice: string;
-  trending: boolean;
-  coverImage: string;
-};
 const UpdateBook = () => {
   const { id } = useParams();
   const { book, isPending, error } = useBook(id);
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<FormValues>();
+    setValue,
+    setError,
+  } = useForm<Omit<FullBookInfo & { coverImage: FileList }, "author">>();
   useEffect(() => {
     if (book) {
       setValue("title", book.title);
       setValue("description", book.description);
-      setValue("category", book?.category as string);
+      setValue("category", book?.category);
       setValue("trending", book.trending as boolean);
-      setValue("oldPrice", book.oldPrice.toFixed(2));
-      setValue("newPrice", book.newPrice.toFixed(2));
-      setValue("coverImage", book.coverImage);
+      setValue("oldPrice", +book.oldPrice.toFixed(2));
+      setValue("newPrice", +book.newPrice.toFixed(2));
       document.title = "Dashboard|Update-Book";
     }
   }, [book, setValue]);
+  const queryClient = useQueryClient();
 
-  const onSubmit = async (data: FormValues) => {
-    const updateBookData = {
+  const { mutate, isSuccess } = useMutation({
+    mutationFn: (formData: FullBookInfo) =>
+      updateBook(formData),
+    mutationKey: ["books"],
+    onSuccess: () => {
+      reset();
+      const fileInput = document.getElementById(
+        "coverImage"
+      ) as HTMLInputElement;
+      if (fileInput) fileInput.value = "";
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+    },
+    onError: (error) => {
+      setError("root", {
+        type: "manual",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to submit form. Please try again.",
+      });
+    },
+  });
+  const onSubmit = async (
+    data: Omit<FullBookInfo & { coverImage: FileList }, "author">
+  ) => {
+    const updateBookData: FullBookInfo = {
       title: data.title,
       description: data.description,
       category: data.category,
       trending: data.trending,
       oldPrice: Number(data.oldPrice),
       newPrice: Number(data.newPrice),
-      coverImage: data.coverImage || book?.coverImage,
+      author: book!.author,
+      coverImage: data.coverImage[0]?.name || book!.coverImage,
+      createdAt: book!.createdAt,
+      _id: book!._id,
     };
-
-    console.log(updateBookData);
-    reset()
+    mutate(updateBookData);
   };
 
   useEffect(() => {}, []);
   if (isPending) return <>loading...</>;
   if (error) return <div>Error fetching book data</div>;
   return (
-    <div className="max-w-lg mx-auto md:p-6 p-3 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Update Book</h2>
+    <div className="max-w-lg mx-auto mt-6 md:p-6 p-3 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Book</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
@@ -91,7 +111,6 @@ const UpdateBook = () => {
           options={[
             { value: "", label: "Choose A Category" },
             { value: "business", label: "Business" },
-            { value: "technology", label: "Technology" },
             { value: "fiction", label: "Fiction" },
             { value: "horror", label: "Horror" },
             { value: "adventure", label: "Adventure" },
@@ -158,14 +177,25 @@ const UpdateBook = () => {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Cover Image
           </label>
-          <Input
-            label="Cover Image URL"
-            name="coverImage"
-            type="text"
-            placeholder="Cover Image URL"
-            register={register}
-            id={"coverImage"}
-            error={undefined}
+          <input
+            id="coverImage"
+            type="file"
+            accept="image/*"
+            {...register("coverImage", {
+              validate: {
+                lessThan10MB: (files) =>
+                  files[0]? files[0].size < 2000000|| "Maximum 2MB file size" : true,
+                acceptedFormats: (files) =>{
+                  const accept =["image/jpeg", "image/png", "image/webp"].includes(
+                    files[0]?.type
+                  );
+                  if(accept)
+                    return true;
+                  else if(files[0])return "Only JPEG, PNG, and WEBP formats are supported"
+                  else return true
+              }},
+            })}
+            className="mb-2 w-full"
           />
           {errors.coverImage && (
             <p className="text-sm text-red-500">{errors.coverImage.message}</p>
@@ -175,7 +205,11 @@ const UpdateBook = () => {
         {errors.root && (
           <p className="text-red-500 text-sm mb-4">{errors.root.message}</p>
         )}
-
+        {isSuccess && (
+          <p className="text-green-500 bg-green-200 py-2 pl-2 rounded border-1 border-green-300 text-sm mb-4">
+            Book added Successfully
+          </p>
+        )}
         <Button
           type="submit"
           disabled={isSubmitting}

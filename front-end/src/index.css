@@ -8,14 +8,14 @@
     --color-secondary: oklch(0.21 0.034 264.665);
     --color-blackBG: oklch(96.42% 0 0);
     --color-Favorite: oklch(68.28% 0.2066 30.81);
-    --animate-cart: cart 1.5s ease-in-out forwards;
-    --animate-box: box 1.5s ease-in-out forwards;
-    --animate-txt1: txt1 1.5s ease-in-out forwards;
-    --animate-txt2: txt2 1.5s ease-in-out forwards;
+    --animate-cart: cart 1.6s ease-in-out forwards;
+    --animate-box: box 1.6s ease-in-out forwards;
+    --animate-txt1: txt1 1.6s ease-in-out forwards;
+    --animate-txt2: txt2 1.6s ease-in-out forwards;
     
     @keyframes cart {
       0% {
-        left: -10%;
+        left: -15%;
       }
       40%, 60% {
         left: 50%;

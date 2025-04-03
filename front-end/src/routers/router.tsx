@@ -16,6 +16,8 @@ import AddBook from "../pages/admin/addBook";
 import ManageBooks from "../pages/admin/manageBooks";
 import { AppErrorBoundary } from "../errorBoundary";
 import UpdateBook from "../pages/admin/updateBook";
+import AuthRoute from "./authRoute";
+import OrdersAdmin from "../pages/admin/ordersAdmin";
 
 const routes: RouteObject[] = [
   {
@@ -32,11 +34,11 @@ const routes: RouteObject[] = [
       },
       {
         path: "/login",
-        element: <Login />,
+        element: <AuthRoute><Login /></AuthRoute>,
       },
       {
         path: "/signup",
-        element: <Signup />,
+        element: <AuthRoute><Signup role="user" /></AuthRoute>,
       },
       {
         path: "/about",
@@ -49,7 +51,7 @@ const routes: RouteObject[] = [
       {
         path: "/user-dashboard",
         element: (
-          <PrivateRoute>
+          <PrivateRoute roles={["user"]}>
             <UserDashboard />
           </PrivateRoute>
         ),
@@ -57,7 +59,7 @@ const routes: RouteObject[] = [
       {
         path: "/orders",
         element: (
-          <PrivateRoute>
+          <PrivateRoute roles={["user"]}>
             <OrderPage />
           </PrivateRoute>
         ),
@@ -69,7 +71,7 @@ const routes: RouteObject[] = [
       {
         path: "/checkout",
         element: (
-          <PrivateRoute>
+          <PrivateRoute roles={["user"]}>
             <Checkout />
           </PrivateRoute>
         ),
@@ -78,9 +80,11 @@ const routes: RouteObject[] = [
   },
   {
     path: "/dashboard",
-    element:  (
+    element: (
       <AppErrorBoundary>
-        <DashboardLayout />
+        <PrivateRoute roles={['admin']}>
+          <DashboardLayout />
+        </PrivateRoute>
       </AppErrorBoundary>
     ),
     children: [
@@ -98,8 +102,16 @@ const routes: RouteObject[] = [
       },
       {
         path: "edit-book/:id",
-        element: <UpdateBook />
-      }
+        element: <UpdateBook />,
+      },
+      {
+        path: "orders",
+        element: <OrdersAdmin />,
+      },
+      {
+        path: "add-admin",
+        element: <Signup role="admin" />,
+      },
     ],
   },
   {

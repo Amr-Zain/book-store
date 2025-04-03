@@ -43,7 +43,7 @@ function CartAddButton({ isAdded, add }: { isAdded: boolean; add: () => void }) 
 
             {/* Icons always rendered but positioned conditionally */}
             <FiShoppingCart className={`absolute z-20 top-1/2 text-2xl transform -translate-x-1/2 -translate-y-1/2 ${
-                isClicked ? 'animate-cart' : 'left-[-10%]'
+                isClicked ? 'animate-cart' : 'left-[-15%]'
             } ${isAdded ? 'left-[110%]' : ''}`} />
 
             <FaBox className={`absolute z-30 text-sm transform -translate-x-1/2 -translate-y-1/2 

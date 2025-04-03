@@ -1,4 +1,5 @@
-import { Book, CartAction } from "../types";
+import { CartAction } from "../types/cartReducer";
+import { Book } from "../types";
 
 
 

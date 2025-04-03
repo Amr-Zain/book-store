@@ -10,23 +10,27 @@ import { useState } from "react";
 import avatarImg from "../assets/avatar.png";
 import { useCart } from "../context/cartContext";
 import { useAuth } from "../context/authContext";
-
-const navigation = [
-  { name: "Dashboard", href: "/user-dashboard" },
-  { name: "Orders", href: "/orders" },
-  { name: "Cart Page", href: "/cart" },
-  { name: "Check Out", href: "/checkout" },
-];
 const Navbar = () => {
   const {
     state: { cartItems },
   } = useCart();
   const auth = useAuth();
 
+  const navigation = [
+    {
+      name: "Dashboard",
+      href:
+        auth?.currentUser?.role === "admin" ? "/dashboard" : "/user-dashboard",
+    },
+    { name: "Orders", href: "/orders" },
+    { name: "Cart Page", href: "/cart" },
+    { name: "Check Out", href: "/checkout" },
+  ];
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <header className="max-w-screen-2xl mx-auto px-4 py-3 z-100 sticky h-16 top-0 bg-white border-1 border-gray-300 shadow-sm">
+    <header className="max-w-screen-2xl mx-auto  px-6 md:px-10 lg:px-14 xl:px-18 2xl:px-24 py-3 z-100 sticky h-16 top-0 bg-white border-1 border-gray-300 shadow-sm">
       <nav className="flex justify-between items-center">
         <div className="flex items-center md:gap-16 gap-4">
           <Link to="/">
@@ -86,7 +90,7 @@ const Navbar = () => {
                 )}
               </>
             ) : (
-              <Link to="/login">
+              <Link onClick={() => window.scrollTo(0, 0)} to="/login">
                 {" "}
                 <HiOutlineUser className="size-6" />
               </Link>

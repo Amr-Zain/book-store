@@ -14,7 +14,8 @@ function Order({ _id, createdAt, totalPrice, productIds, children }:OrderProps) 
             <div className="flex flex-col gap-4 mb-4">
                 <div className="flex justify-between">
                     <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                        orderId: {_id}
+                    <span className="hidden md:inline">orderId: </span>
+                        {_id}
                     </span>
                     <span className="text-sm text-gray-500">
                         {new Date(createdAt).toLocaleDateString()}
