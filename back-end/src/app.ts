@@ -10,6 +10,8 @@ import authenticateUser from "./middleware/authentication";
 import orderRouter from "./routes/order";
 import { initializeApp, ServiceAccount } from 'firebase-admin/app';
 import { credential } from "firebase-admin";
+import adminRouter from "./routes/admin";
+import Book from "./models/book";
 
 const port = process.env.PORT || 3030; 
 
@@ -38,6 +40,7 @@ initializeApp({
 // routes
 app.use('/api/v1/books',bookRouter);
 app.use('/api/v1/orders',orderRouter);
+app.use('/api/v1/admin',adminRouter);
 
 
 
@@ -46,6 +49,7 @@ app.use(errorHandler);
 app.listen(port, async() => {
   try{
     await connectDB(process.env.DB_URL)
+    await Book.updateMany({},{$set:{createdAt:'2025-03-31T02:12:40.487+00:00', updatedAt:'2025-03-31T02:12:40.487+00:00'}})
   }catch(e){
     console.error("DB connection error: ",e)
   }

@@ -21,7 +21,6 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
         const userDoc = userSnapshot.docs[0];
 
         req['user'] = {...userDoc.data()};
-        console.log(req['user'])
         next();
     } catch (error) {
         console.error('Token is invalid:', error);
