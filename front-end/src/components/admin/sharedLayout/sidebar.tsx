@@ -13,7 +13,7 @@ const Sidebar = () => {
   };
   return(
   <aside className="hidden sm:flex sm:flex-col z-100 w-20 sticky left-0 top-0 h-[100vh]">
-    <Link to="/" className="inline-flex items-center justify-center h-18 w-20 bg-primary hover:bg-primary-dark">
+    <Link to="/" className="inline-flex items-center justify-center h-[71px] w-20 bg-primary hover:bg-primary-dark">
       <img src={img} alt="Website logo" className="p-2" />
     </Link>
     <div className="flex-grow flex flex-col justify-between text-gray-500 bg-secondary">

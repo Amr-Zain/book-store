@@ -34,10 +34,10 @@ const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   };
   return (
     <div className="fixed inset-0 backdrop-blur-[1.25px] flex items-center justify-center z-50">
-      <div className="bg-secondary p-6 rounded-lg max-w-md w-full mx-4 text-white">
+      <div className="bg-purple-50 p-6 rounded-lg max-w-md w-full mx-4 text-gray-900 shadow-2xl">
         <h3 className="text-lg font-semibold mb-4">Confirm Deletion</h3>
 
-        <p className="text-white mb-2">
+        <p className="mb-2">
           Are you sure you want to delete this book? This action cannot be
           undone.
         </p>

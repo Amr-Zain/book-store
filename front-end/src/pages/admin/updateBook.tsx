@@ -73,12 +73,14 @@ const UpdateBook = () => {
     mutate(updateBookData);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    document.title = 'Book-Store|Upate-Book';
+  }, []);
   if (isPending) return <>loading...</>;
   if (error) return <div>Error fetching book data</div>;
   return (
     <div className="max-w-lg mx-auto mt-6 md:p-6 p-3 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Book</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Update Book</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input

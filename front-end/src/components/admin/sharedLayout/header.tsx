@@ -7,7 +7,7 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <header className="sticky h-18 px-6 z-100 top-0 sm:px-10 bg-white content-box border-1 border-gray-300 shadow-sm">
+    <header className="sticky h-18 px-6 z-100 top-0 sm:px-10 bg-white content-box border-b-1 border-b-gray-300 shadow-sm">
       <div className="flex items-center h-18">
         <button
         onClick={()=>setIsModalOpen(true)}

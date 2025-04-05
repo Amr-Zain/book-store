@@ -1,4 +1,5 @@
 export interface Book {
+    quantity: number
     _id: string
     coverImage: string
     title: string
