@@ -1,7 +1,11 @@
-import mongoose  from 'mongoose';
+import mongoose from 'mongoose';
 
 const connectDB = (url) => {
-    return mongoose.connect(url);
+    try {
+        return mongoose.connect(url);
+    } catch (e) {
+        console.error("DB connection error: ", e)
+    }
 };
 
 export default connectDB;

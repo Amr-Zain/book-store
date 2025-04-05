@@ -29,7 +29,10 @@ function OrdersAdmin() {
       <div className="container mx-auto p-2 md:p-6 text-center">
         <div className="bg-red-100 text-red-700 p-4 rounded-lg">
           Failed to load orders
-          <button onClick={()=>refetch()} className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+          <button
+            onClick={() => refetch()}
+            className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
             Retry
           </button>
         </div>
@@ -37,6 +40,7 @@ function OrdersAdmin() {
     );
   const ordersList = orders.map((order) => (
     <Order
+      key={order._id}
       _id={order._id}
       createdAt={order.createdAt}
       totalPrice={order.totalPrice}
