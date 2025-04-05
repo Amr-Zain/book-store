@@ -22,6 +22,7 @@ export const cartReducer = (state: CartState, action: CartAction): CartState => 
         }
         case UPDATE_QUANTITY: {
             let price = 0;
+            if(Math.abs(action.payload.value) !==1) return state;
             const updatedItems = state.cartItems.map(item => {
                 if (item._id === action.payload.id) {
                     price = item.newPrice;
@@ -44,7 +45,7 @@ export const cartReducer = (state: CartState, action: CartAction): CartState => 
             if (item) return state;
             return {
                 cartItems: [...state.cartItems, newItem],
-                totalPrice: state.totalPrice + action.payload.newPrice
+                totalPrice: state.totalPrice + action.payload.newPrice * action.payload.quantity || 1
             };
         }
         default:

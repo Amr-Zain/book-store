@@ -14,7 +14,7 @@ const DashboardLayout = () => {
       <div className="flex-grow text-gray-800">
         <Header />
 
-        <main className="p-4 md:p-2 space-y-6">
+        <main className="px-6 md:px-10 lg:px-14 xl:px-18 2xl:px-24 space-y-6">
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between items-center">
             <div className="mr-6">
               <h1 className="text-4xl font-semibold mb-2">Dashboard</h1>
