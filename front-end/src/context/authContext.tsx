@@ -94,12 +94,12 @@ export const AuthProvieder: FC<{ children: React.ReactNode }> = ({
 
         setCurrentUser(user);
         localStorage.setItem("authedUser", JSON.stringify(user));
-        setLoading(false);
       } else {
         setCurrentUser(null);
         localStorage.removeItem("authedUser");
         localStorage.removeItem("accessToken");
       }
+      setLoading(false);
     });
 
     return  () => unsubscribe();;

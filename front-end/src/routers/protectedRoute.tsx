@@ -1,12 +1,13 @@
 import React from "react";
 import { useAuth } from "../context/authContext";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 const PrivateRoute: React.FC<{
   children: React.ReactNode;
   roles: ["user" | "admin"];
 }> = ({ children, roles }) => {
   const auth = useAuth();
+  const location = useLocation();
   if (auth!.loading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -14,7 +15,7 @@ const PrivateRoute: React.FC<{
       </div>
     );
 
-  if (!auth!.currentUser) return <Navigate to="/login" replace />;
+  if (!auth!.currentUser) return <Navigate to="/login" state={{ from: location }} replace />;
 
   if (!roles.includes(auth!.currentUser.role)) {
     return (
