@@ -9,14 +9,16 @@ const createOrder = async (req: Request, res: Response ) => {
 
 const getUserOrders = async (req: Request, res: Response) => {
     let orders =[]
+    console.log(req['user'])
     if(req['user'].role ==='user'){
         const email = req['user'].email;
         orders = await Order.find({ email }).sort({ createdAt: -1 });
+        console.log(orders)
     }
-    if (req['user'].role ==='admin') {
+    else if (req['user'].role ==='admin') {
         orders = await Order.find({});
     }
-    if(!orders.length)res.status(404).json({ message: "there is no orders found" });
+    if(!orders.length) return res.status(201).json({ message: "there is no orders found", orders:[] });
     res.status(200).json({orders});
 }
 

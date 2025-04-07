@@ -1,5 +1,5 @@
 import { FaGoogle } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useActionState, useState } from "react";
 import Button from "../../components/utils/button";
 import { useAuth } from "../../context/authContext";
@@ -8,6 +8,10 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const [googleError, setGoogleError] = useState<string | null>(null);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  console.log("from", from);
+
   const handleLogin = async (
     _prevState: { error?: string },
     formData: FormData
@@ -18,14 +22,13 @@ const Login = () => {
 
     try {
       const user = await auth?.login(email, password);
-      console.log(auth?.currentUser)
-      if(user?.role === 'user')navigate("/");
-      else if(user?.role === 'admin') navigate('/dashboard')
+      if (user?.role === "user") navigate(from, { replace: true });
+      else if (user?.role === "admin") navigate("/dashboard");
       return { error: undefined };
     } catch (error) {
       let errorMessage = "Network error. Please try again.";
       if (error instanceof Error) {
-        errorMessage = error.message;
+        errorMessage = error.message.replace('Firebase: ','');
       }
       return { error: errorMessage };
     }
@@ -35,9 +38,10 @@ const Login = () => {
     try {
       setGoogleError(null);
       await auth?.signInWithGoogle();
-      navigate("/");
+      console.log("from", from);
+      navigate(from, { replace: true });
     } catch (err) {
-      console.error(err)
+      console.error(err);
       setGoogleError(() =>
         err instanceof Error
           ? err.message.replace("Firebase: ", "")

@@ -20,7 +20,6 @@ const Signup = ({ role = "user" }: { role: "user" | "admin" }) => {
       const name = formData.get("name") as string;
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
-      console.log(email, password);
       auth!.register(email, password, role, name);
       if (role === "user") navigate("/");
       else setSuccess(true);
