@@ -45,7 +45,7 @@ export const cartReducer = (state: CartState, action: CartAction): CartState => 
             if (item) return state;
             return {
                 cartItems: [...state.cartItems, newItem],
-                totalPrice: state.totalPrice + action.payload.newPrice * action.payload.quantity || 1
+                totalPrice: state.totalPrice + action.payload.newPrice * action!.payload!.quantity || 1
             };
         }
         default:
