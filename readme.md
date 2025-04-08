@@ -1,6 +1,7 @@
 # Book Store Application
 
 This project is a full-stack book store application with a React frontend and a Node.js/Express backend.
+* live demo https://book-store-eight-rho.vercel.app
 ## Demo
 
 https://github.com/user-attachments/assets/92a684ea-160f-4a81-b177-cc85b2afd96d
