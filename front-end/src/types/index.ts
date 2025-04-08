@@ -12,7 +12,6 @@ export interface Book {
 export interface FullBookInfo extends Book{
   author: string;
   createdAt: number;
-
 }
 
 export type Statistics = {

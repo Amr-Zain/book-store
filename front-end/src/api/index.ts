@@ -75,8 +75,8 @@ export const postBook = async (book: Omit<Book, '_id' | 'createdAt'>): Promise<O
     console.log(data)
     return data;
 }
-export const updateBook = async (book: Omit<Book, 'createdAt'>): Promise<Order> => {
-    const { data } = await api.put(`books/${book._id}`, book);
+export const updateBook = async (book: Omit<Book, 'createdAt'|'quantity'>): Promise<Order> => {
+    const { data } = await api.put(`books/${book._id}`, book); 
     console.log(data)
     return data;
 }

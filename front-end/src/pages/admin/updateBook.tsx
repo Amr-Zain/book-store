@@ -34,7 +34,7 @@ const UpdateBook = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isSuccess } = useMutation({
-    mutationFn: (formData: FullBookInfo) =>
+    mutationFn: (formData:  Omit<FullBookInfo,'quantity'>) =>
       updateBook(formData),
     mutationKey: ["books"],
     onSuccess: () => {
@@ -58,7 +58,7 @@ const UpdateBook = () => {
   const onSubmit = async (
     data: Omit<FullBookInfo & { coverImage: FileList }, "author">
   ) => {
-    const updateBookData: FullBookInfo = {
+    const updateBookData: Omit<FullBookInfo,'quantity'> = {
       title: data.title,
       description: data.description,
       category: data.category,
