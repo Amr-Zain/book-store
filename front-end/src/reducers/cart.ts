@@ -1,53 +1,54 @@
 import { ADD_TO_CART, DELETE_FROM_CART, RESET_CART, UPDATE_QUANTITY } from "../actions/cart";
 import { CartAction, CartState } from "../types/cartReducer";
 
-
-
 export const cartReducer = (state: CartState, action: CartAction): CartState => {
     switch (action.type) {
         case RESET_CART:
             return { cartItems: [], totalPrice: 0 };
 
         case DELETE_FROM_CART: {
-            let price = 0;
-            const filteredItems = state.cartItems.filter(item => {
-                if (item._id === action.payload) price = item.newPrice * item.quantity;
-                return item._id !== action.payload
-            });
-            const totalPrice = Number(state.totalPrice - price).toFixed(2).startsWith('-') ?  0 : state.totalPrice - price;
+            const itemToDelete = state.cartItems.find(item => item._id === action.payload);
+            if (!itemToDelete) return state;
+            
+            const newTotal = Math.max(0, state.totalPrice - (itemToDelete.newPrice * itemToDelete.quantity));
             return {
-                cartItems: filteredItems,
-                totalPrice
+                cartItems: state.cartItems.filter(item => item._id !== action.payload),
+                totalPrice: Number(newTotal.toFixed(2))
             };
         }
+
         case UPDATE_QUANTITY: {
-            let price = 0;
-            if(Math.abs(action.payload.value) !==1) return state;
+            if (Math.abs(action.payload.value) !== 1) return state;
+
+            let priceDelta = 0;
             const updatedItems = state.cartItems.map(item => {
                 if (item._id === action.payload.id) {
-                    price = item.newPrice;
-                    return { ...item, quantity: item.quantity + action.payload.value }
+                    const newQuantity = Math.max(1, item.quantity + action.payload.value);
+                    priceDelta = (newQuantity - item.quantity) * item.newPrice;
+                    return { ...item, quantity: newQuantity };
                 }
-                else return item
-            })
+                return item;
+            });
 
-            return {
+            return priceDelta === 0 ? state : {
                 cartItems: updatedItems,
-                totalPrice: state.totalPrice + (action.payload.value * price)
+                totalPrice: Number((state.totalPrice + priceDelta).toFixed(2))
             };
         }
+
         case ADD_TO_CART: {
-            const item = state.cartItems.find(item => item._id === action.payload._id)
-            const newItem = {
-                ...action.payload,
-                quantity: action.payload.quantity || 1
-            };
-            if (item) return state;
+            const exists = state.cartItems.some(item => item._id === action.payload._id);
+            if (exists) return state;
+
+            const quantity = action.payload.quantity ?? 1;
+            const itemPrice = action.payload.newPrice * quantity;
+            
             return {
-                cartItems: [...state.cartItems, newItem],
-                totalPrice: state.totalPrice + action.payload.newPrice * action!.payload!.quantity || 1
+                cartItems: [...state.cartItems, { ...action.payload, quantity }],
+                totalPrice: Number((state.totalPrice + itemPrice).toFixed(2))
             };
         }
+
         default:
             return state;
     }
